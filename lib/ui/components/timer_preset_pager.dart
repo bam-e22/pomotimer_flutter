@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pomotimer/constants/colors.dart';
 import 'package:pomotimer/constants/sizes.dart';
 
 class TimerPresetPager extends StatefulWidget {
@@ -68,7 +67,7 @@ class _TimerPresetPagerState extends State<TimerPresetPager> {
                       style:
                           Theme.of(context).textTheme.headlineLarge?.copyWith(
                                 color: selectedIndex == index
-                                    ? MyColors.carminePink
+                                    ? Theme.of(context).primaryColor
                                     : Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),

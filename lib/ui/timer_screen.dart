@@ -131,9 +131,8 @@ class _TimerScreenState extends State<TimerScreen> {
             fit: FlexFit.tight,
             child: TimerText(
               duration: _workingDuration,
-              description: _isRunning
-                  ? (_isWorking ? "Work on your task!" : "take a rest...")
-                  : "",
+              showDescription: _isRunning,
+              description: _isWorking ? "Work on your task!" : "take a rest...",
             ),
           ),
           Flexible(
