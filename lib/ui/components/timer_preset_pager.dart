@@ -5,25 +5,21 @@ import 'package:pomotimer/constants/sizes.dart';
 class TimerPresetPager extends StatefulWidget {
   const TimerPresetPager({
     super.key,
+    required this.presets,
+    required this.defaultPresetIndex,
     required this.onTimerPresetChanged,
   });
 
-  final void Function(int time) onTimerPresetChanged;
+  final List<Duration> presets;
+  final int defaultPresetIndex;
+  final void Function(Duration duration) onTimerPresetChanged;
 
   @override
   State<TimerPresetPager> createState() => _TimerPresetPagerState();
 }
 
 class _TimerPresetPagerState extends State<TimerPresetPager> {
-  final times = [15, 20, 25, 30, 35];
   int selectedIndex = 2;
-  final defaultValueIndex = 2;
-
-  @override
-  void initState() {
-    super.initState();
-    widget.onTimerPresetChanged(times[defaultValueIndex]);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +36,20 @@ class _TimerPresetPagerState extends State<TimerPresetPager> {
       child: RotatedBox(
         quarterTurns: -1,
         child: ListWheelScrollView(
-          controller:
-              FixedExtentScrollController(initialItem: defaultValueIndex),
-          physics: FixedExtentScrollPhysics(),
+          controller: FixedExtentScrollController(
+              initialItem: widget.defaultPresetIndex),
+          physics: const FixedExtentScrollPhysics(),
           diameterRatio: 10000,
           perspective: 0.0000000001,
-          onSelectedItemChanged: (value) {
-            widget.onTimerPresetChanged(value);
+          onSelectedItemChanged: (index) {
+            widget.onTimerPresetChanged(widget.presets[index]);
             setState(() {
-              selectedIndex = value;
+              selectedIndex = index;
             });
           },
           itemExtent: 100.0,
           children: [
-            for (var index = 0; index < times.length; index++)
+            for (var index = 0; index < widget.presets.length; index++)
               RotatedBox(
                 quarterTurns: 1,
                 child: Padding(
@@ -67,7 +63,7 @@ class _TimerPresetPagerState extends State<TimerPresetPager> {
                           Border.all(color: Colors.white, width: Sizes.size2),
                     ),
                     child: Text(
-                      times[index].toString(),
+                      widget.presets[index].inSeconds.toString(),
                       textAlign: TextAlign.center,
                       style:
                           Theme.of(context).textTheme.headlineLarge?.copyWith(

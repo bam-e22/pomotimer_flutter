@@ -5,20 +5,22 @@ class PlayButton extends StatelessWidget {
     super.key,
     required this.isRunning,
     required this.size,
+    required this.onPressed,
   });
 
   final bool isRunning;
   final double size;
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       iconSize: size,
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Container(
         width: size * 1.5,
         height: size * 1.5,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.black12,
         ),
