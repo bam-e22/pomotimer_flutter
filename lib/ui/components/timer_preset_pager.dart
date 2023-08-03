@@ -63,7 +63,7 @@ class _TimerPresetPagerState extends State<TimerPresetPager> {
                           Border.all(color: Colors.white, width: Sizes.size2),
                     ),
                     child: Text(
-                      widget.presets[index].inSeconds.toString(),
+                      widget.presets[index].inMinutes.toString(),
                       textAlign: TextAlign.center,
                       style:
                           Theme.of(context).textTheme.headlineLarge?.copyWith(

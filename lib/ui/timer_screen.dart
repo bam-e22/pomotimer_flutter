@@ -19,29 +19,33 @@ class _TimerScreenState extends State<TimerScreen> {
   final int _maxRound = 4;
   int _goal = 0;
   final int _maxGoal = 12;
-  bool _isRunning = false;
-  late Timer _timer;
+
   final List<Duration> _presets = [
-    const Duration(seconds: 15),
-    const Duration(seconds: 20),
-    const Duration(seconds: 25),
-    const Duration(seconds: 30),
-    const Duration(seconds: 35),
+    const Duration(minutes: 15),
+    const Duration(minutes: 20),
+    const Duration(minutes: 25),
+    const Duration(minutes: 30),
+    const Duration(minutes: 35),
   ];
   final int _defaultPresetIndex = 2;
+
   late Duration _durationPreset = _presets[_defaultPresetIndex];
-  late Duration _duration = _durationPreset;
-  final Duration _restDuration = const Duration(seconds: 5);
+  late Duration _workingDuration = _durationPreset;
+  final Duration _restDuration = const Duration(minutes: 5);
+
+  late Timer _timer;
+
+  bool _isRunning = false;
   bool _isWorking = true;
 
   void _onTick(Timer timer) {
-    if (_duration.inSeconds == 0) {
+    if (_workingDuration.inSeconds == 0) {
       setState(() {
         _onTimerEnd();
       });
     } else {
       setState(() {
-        _duration = Duration(seconds: _duration.inSeconds - 1);
+        _workingDuration = Duration(seconds: _workingDuration.inSeconds - 1);
       });
     }
   }
@@ -49,10 +53,10 @@ class _TimerScreenState extends State<TimerScreen> {
   void _onTimerEnd() {
     setState(() {
       if (_isWorking) {
-        _duration = _restDuration;
+        _workingDuration = _restDuration;
         _increaseRound();
       } else {
-        _duration = _durationPreset;
+        _workingDuration = _durationPreset;
       }
       _isWorking = !_isWorking;
     });
@@ -94,7 +98,7 @@ class _TimerScreenState extends State<TimerScreen> {
   void _onTimerPresetChanged(Duration duration) {
     _timer.cancel();
     _durationPreset = duration;
-    _duration = duration;
+    _workingDuration = duration;
     _isRunning = false;
     _isWorking = true;
     _round = 0;
@@ -126,7 +130,7 @@ class _TimerScreenState extends State<TimerScreen> {
             flex: 3,
             fit: FlexFit.tight,
             child: TimerText(
-              duration: _duration,
+              duration: _workingDuration,
               description: _isRunning
                   ? (_isWorking ? "Work on your task!" : "take a rest...")
                   : "",
